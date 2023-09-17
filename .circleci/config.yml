@@ -1,0 +1,25 @@
+version: 2.1
+orbs:
+  cypress: cypress-io/cypress@1.29.0
+workflows:
+  build:
+    jobs:
+      - cypress/run:
+          # run all tests
+          command: npm test
+          # there are no jobs to follow this one
+          # so no need to save the workspace files (saves time)
+          no-workspace: true
+          post-steps:
+            # store the created coverage report folder
+            # you can click on it in the CircleCI UI
+            # to see live static HTML site
+            - store_artifacts:
+                path: coverage
+            # print code coverage summary to the terminal
+            - run: npx nyc report
+            # check if the coverage includes calc.js and it is covered at 100%
+            # https://github.com/bahmutov/check-code-coverage
+            - run: npx check-coverage calc.js
+            - run: npx only-covered calc.js
+

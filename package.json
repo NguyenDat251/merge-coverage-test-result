@@ -1,0 +1,43 @@
+{
+  "name": "cypress-and-jest",
+  "version": "1.0.0",
+  "description": "Cypress and Jest both with code coverage running unit tests",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "cy:open": "cypress open",
+    "test:jest": "jest __tests__",
+    "test:cy": "cypress run",
+    "test": "npm run test:jest && npm run test:cy",
+    "pretest": "rm -rf .nyc_output || true",
+    "posttest": "npm run report:combined",
+    "mkdir:reports": "mkdir reports || true",
+    "precopy:reports": "npm run mkdir:reports",
+    "copy:reports": "cp cypress-coverage/coverage-final.json reports/from-cypress.json && cp jest-coverage/coverage-final.json reports/from-jest.json",
+    "precombine:reports": "npm run copy:reports && mkdir .nyc_output || true",
+    "combine:reports": "npx nyc merge reports && mv coverage.json .nyc_output/out.json",
+    "prereport:combined": "npm run combine:reports",
+    "report:combined": "npx nyc report --reporter lcov --reporter text --report-dir coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bahmutov/cypress-and-jest.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bahmutov/cypress-and-jest/issues"
+  },
+  "homepage": "https://github.com/bahmutov/cypress-and-jest#readme",
+  "devDependencies": {
+    "@cypress/code-coverage": "3.9.12",
+    "babel-plugin-istanbul": "6.1.1",
+    "check-code-coverage": "1.10.5",
+    "cypress": "4.12.1",
+    "jest": "24.9.0"
+  },
+  "nyc": {
+    "report-dir": "cypress-coverage"
+  }
+}
