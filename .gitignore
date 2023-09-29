@@ -5,3 +5,5 @@ coverage
 cypress-coverage/
 cypress/videos
 reports
+unit-out/
+cov-report/
